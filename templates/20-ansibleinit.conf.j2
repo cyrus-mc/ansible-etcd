@@ -1,0 +1,9 @@
+[Service]
+Environment="ETCD_ADVERTISE_CLIENT_URLS=http://{{ ansible_eth0.ipv4.address }}:2379"
+Environment="ETCD_DISCOVERY_SRV={{ ansible_local.k8s_facts.srv_domain }}"
+Environment="ETCD_INITIAL_ADVERTISE_PEER_URLS=http://{{ ansible_eth0.ipv4.address }}:2380"
+Environment="ETCD_INITIAL_CLUSTER_STATE=new"
+Environment="ETCD_INITIAL_CLUSTER_TOKEN=etcd-cluster-{{ ansible_local.k8s_facts.cluster_name }}"
+Environment="ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379"
+Environment="ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380"
+Environment="ETCD_NAME=etcd-1"
