@@ -38,40 +38,13 @@
       state: directory
       mode: 0755
 
-  - name: S3 download backup (if it exists)
-    ignore_errors: True
-    s3:
-      bucket: smarsh-k8s-dev
-      object: /backup.tar.gz
-      dest: /tmp/etcd-backup.tar.gz
-      mode: get
-
-  - stat:
-      path: /tmp/etcd-backup.tar.gz
-    register: etcd_backup
-
   - name: 20-ansibleinit.conf
     template:
       src: 20-ansibleinit.conf.j2
       dest: /etc/systemd/system/etcd-member.service.d/20-ansibleinit.conf
       mode: 0644
-    when: etcd_backup.stat.exists == False
 
-  - name: copy etcd-recovery.sh
-    copy:
-      src: etcd-recovery.sh
-      dest: /root/etcd-recovery.sh
-      mode: 0700
-    when: etcd_backup.stat.exists == True
-
-  - name: run etcd-recovery.sh
-    shell: ./etcd-recovery.sh {{ ansible_local.k8s_facts.hostname }} {{ ansible_eth0.ipv4.address }}
-    args:
-      chdir: /root
-      executable: /bin/bash
-    when: etcd_backup.stat.exists == True
-
-  when: etcd_bootstrap.stat.exists == False
+  when: etcd_bootstrap.stat.exists == True
 
 - name: start etcd-member
   systemd:

@@ -2,6 +2,9 @@
 # image tag to use
 etcd_version: "v3.1.8"
 
+# etcd cluster discovery mode (SRV or static)
+etcd_discovery_mode: "SRV"
+
 # list of entcd servers that form the cluster
 etcd_endpoints: []
 
