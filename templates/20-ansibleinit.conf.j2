@@ -1,15 +1,16 @@
+{% if 'array' in etcd_endpoints.__class__.__name__ %}
 {% set static_nodes = [] %}
 {% for server in etcd_endpoints %}
 {% set infra = "etcd-%d=http://%s:2380" % (loop.index0 + 1, server) %}
 {% set _ = static_nodes.append(infra) %}
 {% endfor %}
+{% endif %}
 [Service]
 Environment="ETCD_IMAGE_TAG={{ etcd_version }}"
 {% if etcd_discovery_mode == "SRV" %}
 Environment="ETCD_DISCOVERY_SRV={{ etcd_discovery_srv }}"
 {% endif %}
 Environment="ETCD_ADVERTISE_CLIENT_URLS={{ etcd_advertise_client_urls }}"
-Environment="ETCD_INITIAL_CLUSTER={{ static_nodes | join(',') }}"
 Environment="ETCD_INITIAL_ADVERTISE_PEER_URLS={{ etcd_initial_advertise_peer_urls }}"
 Environment="ETCD_INITIAL_CLUSTER_STATE=new"
 Environment="ETCD_INITIAL_CLUSTER_TOKEN={{ etcd_initial_cluster_token }}"
