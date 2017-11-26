@@ -3,7 +3,7 @@
 etcd_version: "v3.1.8"
 
 # etcd cluster discovery mode (SRV or static)
-etcd_discovery_mode: "SRV"
+etcd_discovery_mode: "static"
 
 # list of entcd servers that form the cluster
 etcd_endpoints: []
@@ -12,7 +12,7 @@ etcd_endpoints: []
 etcd_advertise_client_urls: "http://{{ ansible_eth0.ipv4.address | default('localhost') }}:2379"
 
 # URL to advertise for peer communication
-etcd_initial_advertise_peer_urls: "http://{{ ansible_eth0.ipv4.address | default('localhost') }}:2380" 
+etcd_initial_advertise_peer_urls: "http://{{ ansible_eth0.ipv4.address | default('localhost') }}:2380"
 
 # following values are used to create a new cluster
 etcd_initial_cluster_token: "etcd-cluster-NEW"
